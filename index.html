@@ -288,6 +288,17 @@ body {
       <div class="field">
         <label>Email école</label>
         <input type="email" id="input-email" placeholder="prenom.nom@emineo.fr" autocomplete="email"/>
+
+      <div class="field">
+        <label>Campus</label>
+        <select id="input-campus" style="width:100%;padding:14px 16px;border-radius:8px;border:1px solid rgba(93,226,152,0.15);background:rgba(11,43,45,0.6);color:white;font-size:15px;font-family:inherit;outline:none;cursor:pointer">
+          <option value="">— Choisir —</option>
+          <option value="paris">Paris</option>
+          <option value="nantes">Nantes</option>
+          <option value="bordeaux">Bordeaux</option>
+          <option value="le mans">Le Mans</option>
+        </select>
+      </div>
       </div>
       <div class="error-msg" id="error-msg">Le prénom est requis.</div>
       <button class="btn-submit" id="btn-enter">Accéder à mes blocs →</button>
@@ -395,7 +406,7 @@ function renderBlocs(progress) {
     if (b.specialite) classes.push('specialite');
     card.className = classes.join(' ');
     if (!isCompleted) card.addEventListener('click', () => {
-      const params = new URLSearchParams({ p: _prenom, n: _nom, e: _email });
+      const params = new URLSearchParams({ p: _prenom, n: _nom, e: _email, c: _campus || '' });
       window.location.href = b.url + '?' + params.toString();
     });
     const tagHtml = b.specialite ? `<div class="bloc-tag">Spécialité</div>` : '';
@@ -427,7 +438,7 @@ const inputEmail = document.getElementById('input-email');
 const errorMsg   = document.getElementById('error-msg');
 
 // Identité stockée après login — utilisée pour construire les URLs avec params
-let _prenom = '', _nom = '', _email = '';
+let _prenom = '', _nom = '', _email = '', _campus = '';
 
 function showError(msg) {
   errorMsg.textContent = msg;
@@ -447,7 +458,7 @@ async function handleEnter() {
   btnEnter.textContent = 'Chargement…';
   btnEnter.disabled = true;
   // Stocker l'identité pour l'injection dans les URLs
-  _prenom = prenom; _nom = nom; _email = email;
+  _prenom = prenom; _nom = nom; _email = email; _campus = document.getElementById('input-campus') ? document.getElementById('input-campus').value : '';
   const progress = await loadProgress(email);
   document.getElementById('screen-login').style.display = 'none';
   const portal = document.getElementById('screen-portal');
@@ -718,6 +729,17 @@ btnEnter.addEventListener('click', handleEnter);
       <div class="field">
         <label>Email école</label>
         <input type="email" id="input-email" placeholder="prenom.nom@emineo.fr" autocomplete="email"/>
+
+      <div class="field">
+        <label>Campus</label>
+        <select id="input-campus" style="width:100%;padding:14px 16px;border-radius:8px;border:1px solid rgba(93,226,152,0.15);background:rgba(11,43,45,0.6);color:white;font-size:15px;font-family:inherit;outline:none;cursor:pointer">
+          <option value="">— Choisir —</option>
+          <option value="paris">Paris</option>
+          <option value="nantes">Nantes</option>
+          <option value="bordeaux">Bordeaux</option>
+          <option value="le mans">Le Mans</option>
+        </select>
+      </div>
       </div>
       <div class="error-msg" id="error-msg">Le prénom est requis.</div>
       <button class="btn-submit" id="btn-enter">Accéder à mes blocs →</button>
@@ -824,7 +846,10 @@ function renderBlocs(progress) {
     const classes = ['bloc-card', isCompleted ? 'completed' : 'available'];
     if (b.specialite) classes.push('specialite');
     card.className = classes.join(' ');
-    if (!isCompleted) card.addEventListener('click', () => { window.location.href = b.url; });
+    if (!isCompleted) card.addEventListener('click', () => {
+      const params = new URLSearchParams({ p: _prenom, n: _nom, e: _email, c: _campus || '' });
+      window.location.href = b.url + '?' + params.toString();
+    });
     const tagHtml = b.specialite ? `<div class="bloc-tag">Spécialité</div>` : '';
     card.innerHTML = `
       <div class="bloc-header">
