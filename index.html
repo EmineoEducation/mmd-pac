@@ -407,7 +407,7 @@ function renderBlocs(progress) {
     card.className = classes.join(' ');
     if (!isCompleted) card.addEventListener('click', () => {
       const params = new URLSearchParams({ p: _prenom, n: _nom, e: _email, c: _campus || '' });
-      window.location.href = b.url + '?' + params.toString();
+      window.open(b.url + '?' + params.toString(), '_blank');
     });
     const tagHtml = b.specialite ? `<div class="bloc-tag">Spécialité</div>` : '';
     card.innerHTML = `
@@ -848,7 +848,7 @@ function renderBlocs(progress) {
     card.className = classes.join(' ');
     if (!isCompleted) card.addEventListener('click', () => {
       const params = new URLSearchParams({ p: _prenom, n: _nom, e: _email, c: _campus || '' });
-      window.location.href = b.url + '?' + params.toString();
+      window.open(b.url + '?' + params.toString(), '_blank');
     });
     const tagHtml = b.specialite ? `<div class="bloc-tag">Spécialité</div>` : '';
     card.innerHTML = `
